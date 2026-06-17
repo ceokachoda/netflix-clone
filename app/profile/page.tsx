@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BadgeInfo, ContactRound, Settings2, ShieldCheck, UserCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
 import PageShell from "@/components/PageShell";
 import SignOutButton from "@/components/SignOutButton";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -23,12 +22,7 @@ export default async function ProfilePage() {
   return (
     <PageShell>
       <main className="mx-auto max-w-6xl px-4 pb-12 pt-24 sm:px-6 lg:px-8">
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
-          className="overflow-hidden rounded-2xl border border-white/10 bg-black/55 shadow-2xl shadow-black/20"
-        >
+        <section className="overflow-hidden rounded-2xl border border-white/10 bg-black/55 shadow-2xl shadow-black/20">
           <div className="bg-[linear-gradient(180deg,rgba(220,38,38,0.18),rgba(0,0,0,0))] px-5 py-6 sm:px-8">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-red-500">
               Account
@@ -118,7 +112,7 @@ export default async function ProfilePage() {
               <SignOutButton />
             </aside>
           </div>
-        </motion.section>
+        </section>
       </main>
     </PageShell>
   );

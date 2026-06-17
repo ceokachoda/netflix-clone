@@ -5,6 +5,13 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request });
   const pathname = request.nextUrl.pathname;
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    return response;
+  }
+
   if (
     pathname.startsWith("/login") ||
     pathname.startsWith("/signup") ||
@@ -14,8 +21,8 @@ export async function middleware(request: NextRequest) {
   }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {

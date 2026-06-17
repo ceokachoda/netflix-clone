@@ -1,3 +1,5 @@
+"use client";
+
 import { Play, Info } from "lucide-react";
 import { motion } from "framer-motion";
 
