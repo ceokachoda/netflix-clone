@@ -172,12 +172,12 @@ export default function MoviePage({ params }: MoviePageProps) {
               <h2 className="mt-2 text-2xl font-bold text-white">More Like This</h2>
             </div>
           </div>
-          <div className="movie-scroll flex gap-3 overflow-x-auto pb-2">
+          <div className="grid grid-cols-2 gap-3 pb-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
             {similarMovies.map((suggestion) => (
               <Link
                 key={suggestion.id}
                 href={`/movies/${suggestion.slug}`}
-                className="group relative h-56 w-36 flex-none overflow-hidden rounded bg-zinc-900 transition duration-300 hover:z-10 hover:scale-105 sm:h-72 sm:w-48"
+                className="group relative aspect-[2/3] overflow-hidden rounded-xl bg-zinc-900 transition duration-300 hover:z-10 hover:scale-[1.02]"
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:brightness-110"

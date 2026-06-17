@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AppTransition from "@/components/AppTransition";
 
 export const metadata: Metadata = {
   title: "Netflix Clone",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col overflow-x-clip bg-[#050505] text-white">
+        <AppTransition>{children}</AppTransition>
+      </body>
     </html>
   );
 }

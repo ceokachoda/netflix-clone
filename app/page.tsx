@@ -21,7 +21,7 @@ export default async function Home() {
       <Navbar />
       <main>
         <Hero movie={featuredMovie} />
-        <div id="movies" className="mx-auto -mt-12 max-w-7xl space-y-8 pb-12">
+        <div id="movies" className="mx-auto -mt-12 max-w-[96rem] space-y-8 pb-12 2xl:-mt-16">
           {movieRows.map((row) => (
             <MovieRow key={row.id} title={row.title} movies={row.movies} />
           ))}

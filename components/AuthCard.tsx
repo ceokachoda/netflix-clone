@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { ArrowRight, Mail, Lock, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 type AuthCardProps = {
   mode: "login" | "signup";
@@ -14,6 +16,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -50,7 +53,12 @@ export default function AuthCard({ mode }: AuthCardProps) {
   }
 
   return (
-    <div className="mx-auto max-w-md overflow-hidden rounded border border-white/10 bg-black/60 shadow-2xl shadow-black/30 backdrop-blur-md">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="mx-auto max-w-md overflow-hidden rounded-2xl border border-white/10 bg-black/60 shadow-2xl shadow-black/30 backdrop-blur-md"
+    >
       <div className="bg-[linear-gradient(180deg,rgba(220,38,38,0.18),rgba(0,0,0,0))] p-6 sm:p-8">
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-red-500">
           Netflix Account
@@ -68,41 +76,68 @@ export default function AuthCard({ mode }: AuthCardProps) {
       <form className="space-y-4 px-6 pb-6 sm:px-8 sm:pb-8" onSubmit={handleSubmit}>
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-zinc-300">Email</span>
-          <input
-            className="w-full rounded border border-white/10 bg-black px-4 py-3 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            required
-          />
+          <div className="relative">
+            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            <input
+              className="w-full rounded-lg border border-white/10 bg-black py-3.5 pl-10 pr-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
         </label>
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-zinc-300">Password</span>
-          <input
-            className="w-full rounded border border-white/10 bg-black px-4 py-3 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="password"
-            minLength={6}
-            required
-          />
+          <span className="mb-2 flex items-center justify-between text-sm font-medium text-zinc-300">
+            <span>Password</span>
+            <button
+              type="button"
+              className="text-xs font-semibold text-zinc-400 transition hover:text-white"
+              onClick={() => setShowPassword((current) => !current)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </span>
+          <div className="relative">
+            <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            <input
+              className="w-full rounded-lg border border-white/10 bg-black py-3.5 pl-10 pr-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="password"
+              minLength={6}
+              required
+            />
+          </div>
         </label>
 
         {message ? (
-          <p className="rounded border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">
+          <p
+            role="status"
+            aria-live="polite"
+            className={`rounded border px-4 py-3 text-sm ${
+              message.toLowerCase().includes("confirm")
+                ? "border-red-500/20 bg-red-500/10 text-red-100"
+                : "border-white/10 bg-white/5 text-zinc-200"
+            }`}
+          >
             {message}
           </p>
         ) : null}
 
-        <button
-          className="w-full rounded-sm bg-red-600 px-4 py-3 font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+        <motion.button
+          className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-red-600 px-4 py-3 font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
           type="submit"
           disabled={loading}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
         >
-          {loading ? "Working..." : mode === "login" ? "Sign In" : "Create Account"}
-        </button>
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+          <span>{loading ? "Working..." : mode === "login" ? "Sign In" : "Create Account"}</span>
+          {!loading ? <ArrowRight className="h-4 w-4" /> : null}
+        </motion.button>
 
         <p className="pt-1 text-center text-sm text-zinc-400">
           {mode === "login" ? "No account yet?" : "Already have an account?"}{" "}
@@ -114,6 +149,6 @@ export default function AuthCard({ mode }: AuthCardProps) {
           </Link>
         </p>
       </form>
-    </div>
+    </motion.div>
   );
 }
