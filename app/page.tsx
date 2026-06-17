@@ -3,8 +3,19 @@ import Hero from "@/components/Hero";
 import MovieRow from "@/components/MovieRow";
 import Navbar from "@/components/Navbar";
 import { featuredMovie, movieRows } from "@/data/movies";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   return (
     <div className="min-h-screen bg-[#050505] text-white">
       <Navbar />

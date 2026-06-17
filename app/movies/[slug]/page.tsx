@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { movieRows } from "@/data/movies";
-import { findMovieBySlug, getSimilarMovies, slugify } from "@/lib/movie-utils";
+import { findMovieBySlug, getSimilarMovies } from "@/lib/movie-utils";
 
 type MoviePageProps = {
   params: {
@@ -47,7 +47,7 @@ const trailerMap: Record<string, string> = {
 export function generateStaticParams() {
   return movieRows.flatMap((row) =>
     row.movies.map((movie) => ({
-      slug: slugify(movie.title),
+      slug: movie.slug,
     })),
   );
 }
@@ -80,9 +80,10 @@ export default function MoviePage({ params }: MoviePageProps) {
               backgroundImage: `linear-gradient(90deg, rgba(5,5,5,0.96) 0%, rgba(5,5,5,0.76) 44%, rgba(5,5,5,0.32) 100%), url(${movie.image})`,
             }}
           />
-          <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-14">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(220,38,38,0.16),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_40%)]" />
+          <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-14">
             <div className="flex items-end">
-              <div className="max-w-2xl">
+              <div className="max-w-2xl rounded-2xl border border-white/10 bg-black/30 p-5 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-6">
                 <div className="mb-4 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-zinc-300">
                   <span className="text-red-500">Movie Details</span>
                   <span>{movie.year}</span>
@@ -117,6 +118,9 @@ export default function MoviePage({ params }: MoviePageProps) {
                   <button className="rounded-sm bg-zinc-700/85 px-6 py-3 text-sm font-bold text-white transition hover:bg-zinc-600">
                     Watch Later
                   </button>
+                  <button className="rounded-sm border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:border-white/30 hover:bg-white/5">
+                    Download
+                  </button>
                   <Link
                     href="/"
                     className="rounded-sm border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:border-white/30 hover:bg-white/5"
@@ -127,7 +131,7 @@ export default function MoviePage({ params }: MoviePageProps) {
               </div>
             </div>
 
-            <aside className="rounded border border-white/10 bg-black/40 p-4 backdrop-blur-md sm:p-5">
+            <aside className="rounded-2xl border border-white/10 bg-black/40 p-4 shadow-2xl shadow-black/25 backdrop-blur-md sm:p-5">
               <div className="aspect-video overflow-hidden rounded bg-black">
                 <iframe
                   className="h-full w-full"
@@ -172,7 +176,7 @@ export default function MoviePage({ params }: MoviePageProps) {
             {similarMovies.map((suggestion) => (
               <Link
                 key={suggestion.id}
-                href={`/movies/${slugify(suggestion.title)}`}
+                href={`/movies/${suggestion.slug}`}
                 className="group relative h-56 w-36 flex-none overflow-hidden rounded bg-zinc-900 transition duration-300 hover:z-10 hover:scale-105 sm:h-72 sm:w-48"
               >
                 <div
