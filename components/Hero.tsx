@@ -7,6 +7,7 @@ type HeroProps = {
     duration: string;
     genres: string[];
     backdrop: string;
+    trailerId: string;
   };
 };
 
@@ -41,9 +42,14 @@ export default function Hero({ movie }: HeroProps) {
             {movie.description}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <button className="rounded-sm bg-white px-6 py-3 text-sm font-bold text-black transition hover:bg-zinc-200">
+            <a
+              href={`https://www.youtube.com/watch?v=${movie.trailerId}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-sm bg-white px-6 py-3 text-sm font-bold text-black transition hover:bg-zinc-200"
+            >
               Play
-            </button>
+            </a>
             <button className="rounded-sm bg-zinc-700/80 px-6 py-3 text-sm font-bold text-white transition hover:bg-zinc-600">
               More Info
             </button>

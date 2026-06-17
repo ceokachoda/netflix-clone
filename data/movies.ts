@@ -4,6 +4,9 @@ export type Movie = {
   year: string;
   rating: string;
   image: string;
+  description?: string;
+  runtime?: string;
+  genres?: string[];
 };
 
 export type MovieRow = {
@@ -21,9 +24,11 @@ export const featuredMovie = {
   year: "2026",
   rating: "TV-MA",
   duration: "2h 08m",
+  runtime: "2h 08m",
   genres: ["Thriller", "Sci-Fi", "Mystery"],
   backdrop:
     "https://image.tmdb.org/t/p/original/8rpDcsfLJypbO6vREc0547VKqEv.jpg",
+  trailerId: "dQw4w9WgXcQ",
 };
 
 export const movieRows: MovieRow[] = [

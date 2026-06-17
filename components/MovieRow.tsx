@@ -1,4 +1,9 @@
+import Link from "next/link";
 import type { Movie } from "@/data/movies";
+
+function slugify(title: string) {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
 
 type MovieRowProps = {
   title: string;
@@ -13,8 +18,9 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
       </h2>
       <div className="movie-scroll flex gap-3 overflow-x-auto px-4 pb-5 pt-1 sm:gap-4 sm:px-6 lg:px-8">
         {movies.map((movie) => (
-          <article
+          <Link
             key={movie.id}
+            href={`/movies/${slugify(movie.title)}`}
             className="group relative h-56 w-36 flex-none overflow-hidden rounded bg-zinc-900 shadow-xl shadow-black/30 transition duration-300 hover:z-10 hover:scale-105 sm:h-72 sm:w-48"
           >
             <div
@@ -27,10 +33,10 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
                 {movie.title}
               </h3>
               <p className="mt-1 text-xs font-medium text-zinc-300">
-                {movie.year} • {movie.rating}
+                {movie.year} | {movie.rating}
               </p>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
